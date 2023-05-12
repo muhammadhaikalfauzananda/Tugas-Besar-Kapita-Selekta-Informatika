@@ -3,32 +3,32 @@ from sys import argv
 from struct import *
 
 input_file = argv[1]
-maximum_table_size = pow(2, 24)
+Ukuran_tabel_maksimum = pow(2, 24)
 file = open(input_file)
 data = file.read()
 
-dictionary_size = 256
-dictionary = {chr(i): i for i in range(dictionary_size)}
-string = ""
-compressed_data = []
+size_kamus = 256
+kamus = {chr(i): i for i in range(size_kamus)}
+kalimat = ""
+data_kompres = []
 
-for symbol in data:
-    string_plus_symbol = string + symbol
-    if string_plus_symbol in dictionary:
-        string = string_plus_symbol
+for simbol in data:
+    kalimat_tambah_simbol = kalimat + simbol
+    if kalimat_tambah_simbol in kamus:
+        kalimat = kalimat_tambah_simbol
     else:
-        compressed_data.append(dictionary[string])
-        if (len(dictionary) <= maximum_table_size):
-            dictionary[string_plus_symbol] = dictionary_size
-            dictionary_size += 1
-        string = symbol
+        data_kompres.append(kamus[kalimat])
+        if (len(kamus) <= Ukuran_tabel_maksimum):
+            kamus[kalimat_tambah_simbol] = size_kamus
+            size_kamus += 1
+        kalimat = simbol
 
-if string in dictionary:
-    compressed_data.append(dictionary[string])
+if kalimat in kamus:
+    data_kompres.append(kamus[kalimat])
 
 out = input_file.split(".")[0]
 output_file = open(out + ".lzw", "wb")
-for data in compressed_data:
+for data in data_kompres:
     output_file.write(pack('>H', int(data)))
 
 output_file.close()
